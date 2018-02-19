@@ -1,0 +1,59 @@
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+          "file_path": {
+            "type": "custom",
+            "tokenizer": "path_hierarchy",
+            "filter": [
+              "lowercase"
+            ]
+          },
+          "edge_ngram_analyzer": {
+            "type": "custom",
+            "tokenizer": "edge_ngram_tokenizer",
+            "filter": [
+              "lowercase"
+            ]
+          },
+          "lower_search_analyzer": {
+            "tokenizer": "standard",
+            "filter": [
+              "lowercase"
+            ]
+          }
+      },
+      "tokenizer": {
+        "edge_ngram_tokenizer": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 10,
+          "token_chars": [
+            "letter",
+            "digit"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "book": {
+      "properties": {
+        "filename": {
+          "type": "text",
+          "analyzer": "edge_ngram_analyzer",
+          "search_analyzer": "lower_search_analyzer"
+        },
+        "filetype": {
+          "type": "text"
+        },
+        "filepath": {
+          "type": "text",
+          "analyzer": "file_path"
+        }
+      }
+    }
+  }
+}

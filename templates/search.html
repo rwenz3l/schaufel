@@ -1,0 +1,16 @@
+{% if results %}
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Book</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for book in results %}
+    <tr>
+      <td>{{ book._source.filename }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
