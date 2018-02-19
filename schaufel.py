@@ -43,6 +43,14 @@ def wait_for_es():
     sys.exit(1)
 
 
+def create_index_if_not_exists():
+    with open('es_schaufel_index.json') as f:
+        d = json.load(f)
+        json_data.close()
+    # Create new Index
+    es.indices.create(index=ELASTIC_INDEX, body=d, ignore=400)
+
+
 @app.route('/')
 def root():
     """
@@ -99,6 +107,6 @@ if __name__ == '__main__':
     app.debug = True
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
         wait_for_es()  # waits for elasticsearch
-        index_books()
+        create_index_if_not_exists()
     # Start Flask App
     app.run(host="0.0.0.0", port=8150)
