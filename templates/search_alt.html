@@ -10,7 +10,7 @@
     {% for book in results %}
     <tr>
         <th scope="row"></th>
-        <td>{{ book._source.filename }}</td>
+        <td>{{ book._source.filename }} [<a href="#" onclick='alert("{{ book._source.filepath }}");'>Path</a>]</td>
     </tr>
     {% endfor %}
     </tbody>
