@@ -1,50 +1,42 @@
 <html>
-    <head>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
-        <script
-			  src="http://code.jquery.com/jquery-3.3.1.min.js"
-			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			  crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='js/user.js') }}"></script>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <title>Schaufel File Indexer</title>
-    </head>
-    <body>
-	<div class="center" style="width: 600px;">
-        <div class="form-group">
-            <input id="search_input"
-                   type="text"
-                   class="form-control"
-                   style="width: 100%;"
-                   placeholder="Search">
-        </div>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/user.js') }}"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Schaufel File Indexer</title>
+</head>
+<body>
+<div class="center" style="width: 600px;">
+    <div class="form-group">
+        <input id="search_input"
+               type="text"
+               class="form-control"
+               style="width: 100%;"
+               placeholder="Search">
+    </div>
     <br/>
-    </div>
-    <hr/>
-    <div id="search_result" style="padding: 50px;">
-        {% if results %}
-            <table class="table table-sm">
-  <thead>
-    <tr>
-      <th scope="col">Random Book</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for book in results %}
-    <tr>
-      <td>{{ book._source.filename }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-{% endif %}
-    </div>
+</div>
+<hr/>
+<div id="search_result" style="padding: 50px;"></div>
 
-    <hr/>
-    <div class="center" style="width: 600px;">
-        <button class="btn btn-success pull-right" id="index" onclick="reIndex()">Re-Index Library</button>
+<hr/>
+<div class="container">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Toolbox</h5>
+            <div>
+                <button class="btn btn-success float-left" id="index" onclick="reIndex()">Re-Index Library</button>
+                <div id="index_loader" class="loader float-right"></div>
+            </div>
+        </div>
     </div>
+</div>
 
 </body>
 

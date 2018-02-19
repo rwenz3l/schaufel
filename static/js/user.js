@@ -25,11 +25,13 @@ function search(){
 }
 
 function reIndex(){
+$( "#index_loader" ).show();
 $.ajax({
         type: 'get',
         url: '/index',
         success: function (response) {
             console.log("Re-Indexed")
+            $( "#index_loader" ).hide();
         }
     });
 }

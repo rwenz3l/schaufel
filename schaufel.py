@@ -1,19 +1,22 @@
 #! /usr/bin/python3
 
 import os
-import signal
-import subprocess
+import sys
 import requests
-import atexit
 import json
+from time import sleep
 from requests.exceptions import ConnectionError
 from flask import Flask, render_template, jsonify, request
-from pprint import pprint as pp
 from elasticsearch import Elasticsearch
 
-# CONSTANTS
-LIBRARY_PATH = "/Users/rwenzel/Documents/eBooks"
-ELASTIC_INDEX = 'schaufel'
+# CONFIG
+
+with open('config.json') as json_data:
+    config = json.load(json_data)
+    json_data.close()
+
+LIBRARY_PATH = config['library_path']
+ELASTIC_INDEX = config['elastic_index']
 
 # FLASK
 app = Flask(__name__)
@@ -21,6 +24,23 @@ app.secret_key = 'SchaufelKey'
 
 # INIT
 es = Elasticsearch([{'host': 'localhost', 'port': 9200}])
+
+
+def wait_for_es():
+    """
+    Make Sure that the connection to
+    :return:
+    """
+    for x in range(0, 5):
+        print("Attempt: %i" % x)
+        try:
+            es.info()
+            return 0
+        except Exception as e:
+            sleep(5)
+            pass
+        print("Could not Connect to ES")
+    sys.exit(1)
 
 
 @app.route('/')
@@ -48,9 +68,10 @@ def test_elasticsearch():
 @app.route('/search', methods=['POST'])
 def search_books():
     q = request.form['query']
-    query = {"query": {"match": {"filename": {"query": q, "operator": "and"}}}}
+
+    query = {"from": 0, "size": 20, "query": {"match": {"filename": {"query": q, "operator": "and"}}}}
     res = es.search(index=ELASTIC_INDEX, doc_type="book", body=query)
-    return render_template('search.html', results=res['hits']['hits'])
+    return render_template('search_alt.html', results=res['hits']['hits'])
 
 
 @app.route('/index')
@@ -77,7 +98,7 @@ def index_books():
 if __name__ == '__main__':
     app.debug = True
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-        # Prepare Stuff here
-        pass
+        wait_for_es()  # waits for elasticsearch
+        index_books()
     # Start Flask App
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=8150)
