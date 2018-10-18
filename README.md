@@ -1,9 +1,7 @@
 # Schaufel
 A FileSearch WebApp based on ElasticSearch and Python Flask
 
-TODO:
+![screenshot](screenshot.png)
 
-* Add Image so people can look at this glory
-
-Instructions to Setup ElasticSearch:
+Requires ElasticSearch for Storage:
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/
